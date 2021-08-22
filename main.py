@@ -39,5 +39,4 @@ def display_menu():
 
 
 if __name__ == '__main__':
-    show_developer_info()
     display_menu()
