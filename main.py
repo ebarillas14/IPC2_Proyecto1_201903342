@@ -14,6 +14,7 @@ def show_developer_info():
 def display_menu():
     menu_flag = True
     while menu_flag:
+        # create_matrix(5, 5)
         print("===================================================")
         print("              QUE DESEAS HACER ?                   ")
         print("===================================================")
@@ -39,4 +40,10 @@ def display_menu():
 
 
 if __name__ == '__main__':
+    mt = Matrix(5, 5)
+    mt.display_in_menu()
+    some = mt.get_value(1, 1)
+    print(some)
     display_menu()
+
+
