@@ -1,5 +1,9 @@
 <terrenos>
  <terreno nombre="terreno1">
+  <dimension>
+   <m>5</m>
+   <n>5</n>
+  </dimension>
   <posicioninicio>
    <x>1</x>
    <y>1</y>
@@ -9,40 +13,40 @@
    <y>5</y>
   </posicionfin>
   <posicion x="1" y="1">1</posicion>
-  <posicion x="1" y="2">1</posicion>
-  <posicion x="1" y="3">5</posicion>
-  <posicion x="1" y="4">3</posicion>
-  <posicion x="1" y="5">2</posicion>
-  <posicion x="2" y="1">4</posicion>
-  <posicion x="2" y="2">1</posicion>
-  <posicion x="2" y="3">4</posicion>
-  <posicion x="2" y="4">2</posicion>
-  <posicion x="2" y="5">6</posicion>
-  <posicion x="3" y="1">3</posicion>
-  <posicion x="3" y="2">1</posicion>
-  <posicion x="3" y="3">1</posicion>
-  <posicion x="3" y="4">3</posicion>
-  <posicion x="3" y="5">3</posicion>
-  <posicion x="4" y="1">5</posicion>
-  <posicion x="4" y="2">2</posicion>
-  <posicion x="4" y="3">3</posicion>
-  <posicion x="4" y="4">1</posicion>
-  <posicion x="4" y="5">2</posicion>
-  <posicion x="5" y="1">2</posicion>
-  <posicion x="5" y="2">1</posicion>
-  <posicion x="5" y="3">1</posicion>
-  <posicion x="5" y="4">1</posicion>
-  <posicion x="5" y="5">1</posicion>
+  <posicion x="1" y="2">2</posicion>
+  <posicion x="1" y="3">3</posicion>
+  <posicion x="1" y="4">4</posicion>
+  <posicion x="1" y="5">5</posicion>
+  <posicion x="2" y="1">6</posicion>
+  <posicion x="2" y="2">7</posicion>
+  <posicion x="2" y="3">8</posicion>
+  <posicion x="2" y="4">9</posicion>
+  <posicion x="2" y="5">10</posicion>
+  <posicion x="3" y="1">11</posicion>
+  <posicion x="3" y="2">12</posicion>
+  <posicion x="3" y="3">13</posicion>
+  <posicion x="3" y="4">14</posicion>
+  <posicion x="3" y="5">15</posicion>
+  <posicion x="4" y="1">16</posicion>
+  <posicion x="4" y="2">17</posicion>
+  <posicion x="4" y="3">18</posicion>
+  <posicion x="4" y="4">19</posicion>
+  <posicion x="4" y="5">20</posicion>
+  <posicion x="5" y="1">21</posicion>
+  <posicion x="5" y="2">22</posicion>
+  <posicion x="5" y="3">23</posicion>
+  <posicion x="5" y="4">24</posicion>
+  <posicion x="5" y="5">25</posicion>
  </terreno>
  <terreno nombre="terreno2">
-  <posicioninicio>
-   <x>2</x>
-   <y>2</y>
-  </posicioninicio>
   <posicionfin>
    <x>6</x>
    <y>1</y>
   </posicionfin>
+  <dimension>
+   <m>4</m>
+   <n>7</n>
+  </dimension>
   <posicion x="1" y="1">1</posicion>
   <posicion x="1" y="2">1</posicion>
   <posicion x="1" y="3">1</posicion>
@@ -71,5 +75,87 @@
   <posicion x="7" y="2">1</posicion>
   <posicion x="7" y="3">1</posicion>
   <posicion x="7" y="4">1</posicion>
+  <posicioninicio>
+   <x>2</x>
+   <y>2</y>
+  </posicioninicio>
+ </terreno>
+ <terreno nombre="terreno3">
+  <dimension>
+   <m>5</m>
+   <n>5</n>
+  </dimension>
+  <posicioninicio>
+   <x>1</x>
+   <y>1</y>
+  </posicioninicio>
+  <posicionfin>
+   <x>5</x>
+   <y>5</y>
+  </posicionfin>
+  <posicion y="1" x="1">1</posicion>
+  <posicion y="1" x="2">1</posicion>
+  <posicion y="1" x="3">5</posicion>
+  <posicion y="1" x="4">3</posicion>
+  <posicion y="1" x="5">2</posicion>
+  <posicion y="2" x="1">4</posicion>
+  <posicion y="2" x="2">1</posicion>
+  <posicion y="2" x="3">4</posicion>
+  <posicion y="2" x="4">2</posicion>
+  <posicion y="2" x="5">6</posicion>
+  <posicion y="3" x="1">3</posicion>
+  <posicion y="3" x="2">1</posicion>
+  <posicion y="3" x="3">1</posicion>
+  <posicion y="3" x="4">3</posicion>
+  <posicion y="3" x="5">3</posicion>
+  <posicion y="4" x="1">5</posicion>
+  <posicion y="4" x="2">2</posicion>
+  <posicion y="4" x="3">3</posicion>
+  <posicion y="4" x="4">1</posicion>
+  <posicion y="4" x="5">2</posicion>
+  <posicion y="5" x="1">2</posicion>
+  <posicion y="5" x="2">1</posicion>
+  <posicion y="5" x="3">1</posicion>
+  <posicion y="5" x="4">1</posicion>
+  <posicion y="5" x="5">1</posicion>
+ </terreno>
+ <terreno nombre="terreno4">
+ <posicioninicio>
+   <x>1</x>
+   <y>1</y>
+ </posicioninicio>
+  <posicionfin>
+   <x>5</x>
+   <y>5</y>
+ </posicionfin>
+  <dimension>
+    <m>5</m>
+    <n>5</n>
+  </dimension>
+  <posicion x="1" y="1">1</posicion>
+  <posicion x="1" y="2">1</posicion>
+  <posicion x="1" y="3">5</posicion>
+  <posicion x="1" y="4">3</posicion>
+  <posicion x="1" y="5">2</posicion>
+  <posicion x="2" y="1">4</posicion>
+  <posicion x="2" y="2">1</posicion>
+  <posicion x="2" y="3">4</posicion>
+  <posicion x="2" y="4">2</posicion>
+  <posicion x="2" y="5">6</posicion>
+  <posicion x="3" y="1">3</posicion>
+  <posicion x="3" y="2">1</posicion>
+  <posicion x="3" y="3">1</posicion>
+  <posicion x="3" y="4">3</posicion>
+  <posicion x="3" y="5">3</posicion>
+  <posicion x="4" y="1">5</posicion>
+  <posicion x="4" y="2">2</posicion>
+  <posicion x="4" y="3">3</posicion>
+  <posicion x="4" y="4">1</posicion>
+  <posicion x="4" y="5">2</posicion>
+  <posicion x="5" y="1">2</posicion>
+  <posicion x="5" y="2">1</posicion>
+  <posicion x="5" y="3">1</posicion>
+  <posicion x="5" y="4">1</posicion>
+  <posicion x="5" y="5">1</posicion>
  </terreno>
 </terrenos>

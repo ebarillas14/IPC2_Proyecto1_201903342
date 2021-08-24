@@ -1,4 +1,7 @@
 from helpers import *
+from TDA import *
+from graphviz import *
+import os
 
 
 def show_developer_info():
@@ -11,10 +14,18 @@ def show_developer_info():
     print("===================================================")
 
 
+def generate_graphic(name):
+    dot = Graph(f'{name}', format='pdf')
+    dot.render(name)
+    os.system(f"{name}.pdf")
+    pass
+
+
 def display_menu():
     menu_flag = True
+    terrains = LinkedList()
     while menu_flag:
-        # create_matrix(5, 5)
+        # create_matrix(5, 5) 
         print("===================================================")
         print("              QUE DESEAS HACER ?                   ")
         print("===================================================")
@@ -28,22 +39,26 @@ def display_menu():
         validated_option = validate_number(response, 1, 6)
         if validated_option is not None:
             if validated_option == 1:
-                pass
+                route = input("Ingresa la ruta del archivo a abrir \n")
+                terrains = load_xml("ArchivosPrueba/test.xml")
             elif validated_option == 2:
                 pass
             elif validated_option == 3:
                 pass
             elif validated_option == 4:
                 show_developer_info()
+            elif validated_option == 5:
+                print("Terrenos previamente cargados:")
+                print("==============================")
+                terrains.get_all_names()
+                print("==============================")
+                name = input("ingresa el nombre del terreno a mostrar")
+                generate_graphic(name)
             else:
                 menu_flag = False
 
 
 if __name__ == '__main__':
-    mt = Matrix(5, 5)
-    mt.display_in_menu()
-    some = mt.get_value(1, 1)
-    print(some)
     display_menu()
 
 
