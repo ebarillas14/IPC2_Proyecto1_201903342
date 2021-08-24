@@ -14,10 +14,24 @@ def show_developer_info():
     print("===================================================")
 
 
-def generate_graphic(name):
-    dot = Graph(f'{name}', format='pdf')
-    dot.render(name)
-    os.system(f"{name}.pdf")
+def generate_graphic(terrain):
+    matrix = terrain.matrix
+    dot = Graph(f'{terrain.name}', format='jpg')
+    dot.graph_attr['rankdir'] = 'TB'
+    for y in range(matrix.rows):
+        for x in range(matrix.columns):
+            value = matrix.get_value(x, y)
+            # dot.node(f"r{y}c{x}", f"y{y}x{x}  VALUE {value}", shape="box")
+            dot.node(f"r{y}c{x}", f"{value}", shape="box")
+        for x in range(matrix.columns-1):
+            dot.edge(f"r{y}c{x}", f"r{y}c{x+1}", "", constraint="false")
+    for y in range(matrix.rows-1):
+        for x in range(matrix.columns):
+            dot.edge(f"r{y}c{x}", f"r{y+1}c{x}")
+    # dot.node(f"node2", "LABEL", shape="box")
+    # dot.edge("node1", f"node2")
+    dot.render(terrain.name)
+    os.system(f"{terrain.name}.jpg")
     pass
 
 
@@ -48,12 +62,16 @@ def display_menu():
             elif validated_option == 4:
                 show_developer_info()
             elif validated_option == 5:
-                print("Terrenos previamente cargados:")
-                print("==============================")
-                terrains.get_all_names()
-                print("==============================")
-                name = input("ingresa el nombre del terreno a mostrar")
-                generate_graphic(name)
+                if terrains.len() == 0 :
+                    print("No has cargador ningún terreo, por favor carga al menos un terreno")
+                else:
+                    print("Terrenos previamente cargados:")
+                    print("==============================")
+                    terrains.get_all_names()
+                    print("==============================")
+                    name = input("ingresa el nombre del terreno a mostrar")
+                    terrain = terrains.get(name)
+                    generate_graphic(terrain)
             else:
                 menu_flag = False
 

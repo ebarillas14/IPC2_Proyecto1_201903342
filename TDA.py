@@ -104,11 +104,13 @@ class Matrix:
             rows.insert(0, y, cols)
         self.matrix = rows
 
-    def get_value(self, row, col):
-        rows = self.matrix.get_value(0, row)
-        cols = rows.data
-        item = cols.get_value(col, row)
-        return item.data
+    def get_value(self, x, y):
+        row = self.matrix.get_value(0, y)
+        col = row.First
+        while col.px != x or col.py != y and col is not None:
+            col = col.Next
+
+        return col.data
     
     def display_in_menu(self):
         mt = self.matrix
