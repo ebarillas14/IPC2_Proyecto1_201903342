@@ -86,6 +86,18 @@ class LinkedList:
             tmp = tmp.Next
         print(tmp.name)
 
+    def append(self, nodes):
+        node = nodes.First
+        if self.First is None:
+            self.First = node
+            self.length += nodes.len()
+        else:
+            tmp = self.First
+            while tmp.Next is not None:
+                tmp = tmp.Next
+            tmp.Next = node
+            self.length += nodes.len()
+
 
 class Matrix:
     def __init__(self, row_count, col_count, value_list):

@@ -28,8 +28,6 @@ def generate_graphic(terrain):
     for y in range(matrix.rows-1):
         for x in range(matrix.columns):
             dot.edge(f"r{y}c{x}", f"r{y+1}c{x}")
-    # dot.node(f"node2", "LABEL", shape="box")
-    # dot.edge("node1", f"node2")
     dot.render(terrain.name)
     os.system(f"{terrain.name}.jpg")
     pass
@@ -39,7 +37,6 @@ def display_menu():
     menu_flag = True
     terrains = LinkedList()
     while menu_flag:
-        # create_matrix(5, 5) 
         print("===================================================")
         print("              QUE DESEAS HACER ?                   ")
         print("===================================================")
@@ -54,7 +51,8 @@ def display_menu():
         if validated_option is not None:
             if validated_option == 1:
                 route = input("Ingresa la ruta del archivo a abrir \n")
-                terrains = load_xml("ArchivosPrueba/test.xml")
+                tmp_terrains = load_xml(route)
+                terrains.append(tmp_terrains)
             elif validated_option == 2:
                 pass
             elif validated_option == 3:
@@ -74,6 +72,8 @@ def display_menu():
                     generate_graphic(terrain)
             else:
                 menu_flag = False
+
+
 
 
 if __name__ == '__main__':
