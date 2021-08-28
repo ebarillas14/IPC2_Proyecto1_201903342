@@ -1,6 +1,33 @@
 from random import randint
 
 
+class SimpleNode:
+    def __init__(self, data):
+        self.data = data
+        self.Next = None
+
+
+class SimpleLinkedList:
+    def __init__(self):
+        self.First = None
+        self.length = 0
+
+    def insert(self, data):
+        new_node = SimpleNode(data)
+        if self.First is None:
+            self.First = new_node
+            self.length += 1
+        else:
+            tmp = self.First
+            while tmp.Next is not None:
+                tmp = tmp.Next
+            tmp.Next = new_node
+            self.length += 1
+
+    def len(self):
+        return self.length
+
+
 class BasicNode:
     def __init__(self, px, py, data):
         self.px = px
@@ -78,7 +105,7 @@ class LinkedList:
 
     def len(self):
         return self.length
-    
+
     def get_all_names(self):
         tmp = self.First
         while tmp.Next is not None:
@@ -123,7 +150,7 @@ class Matrix:
             col = col.Next
 
         return col.data
-    
+
     def display_in_menu(self):
         mt = self.matrix
         tmp = self.matrix.First
@@ -143,3 +170,42 @@ class Matrix:
             line += f"{col_tmp.data}|"
             col_tmp = col_tmp.Next
         print(line)
+
+
+class Stack:
+    def __init__(self):
+        self.First = None
+        self.len = 0
+
+    def push(self, px, py, data):
+        if self.length == 0:
+            self.First = BasicNode(px, py, data)
+            self.len += 1
+        else:
+            tmp = self.First
+            self.First = BasicNode(px, py, data)
+            self.First.Next = tmp
+            self.len += 1
+
+    def pop(self):
+        if self.len <= 0:
+            print("Stack Underflow")
+        else:
+            tmp_res = self.First
+            tmp = self.First.Next
+            self.First = tmp
+            self.len -= 1
+            return tmp_res
+
+    def length(self):
+        return self.len
+
+    def show_stack(self):
+        tmp = self.First
+        while tmp.Next is not None:
+            print(f"{tmp.data}")
+            tmp = tmp.Next
+        print(f"{tmp.data}")
+
+    def peek(self):
+        return self.First
