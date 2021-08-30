@@ -32,60 +32,30 @@ def generate_graphic(terrain):
     pass
 
 
-def process_terrain_v2(terrain):
-    st = Stack()
-    cont = 0
-    px = pxo = int(terrain.pxo) - 1
-    py = pyo = int(terrain.pyo) - 1
-    pxf = int(terrain.pxf)-1
-    pyf = int(terrain.pyf) - 1
-    pm = possible_moves(terrain, px, py)
-    tmp = pm.First
-    while tmp.Next is not None:
-        st.push(tmp.px, tmp.py, tmp.data)
-        tmp = tmp.Next
-    st.push(tmp.px, tmp.py, tmp.data)
-
-    px = st.peek().px
-    py = st.peek().py
-    while px != pxf or py != pyf:
-        print(f"Se han realizado {cont} iteraciones")
-        pm = possible_moves(terrain, px, py)
-        tmp = pm.First
-        while tmp.Next is not None:
-            st.push(tmp.px, tmp.py, tmp.data)
-            cont += 1
-            tmp = tmp.Next
-        st.push(tmp.px, tmp.py, tmp.data)
-        cont += 1
-        px = st.peek().px
-        py = st.peek().py
-
-    st.show_stack()
-
-
 def process_terrain(terrain):
-    st = Stack()
+    q = Queue()
     cont = 0
     px = pxo = int(terrain.pxo) - 1
     py = pyo = int(terrain.pyo) - 1
     pxf = int(terrain.pxf)-1
     pyf = int(terrain.pyf) - 1
     data = terrain.matrix.get_value(px, py)
-    st.push(px, py, data)
+    q.enqueue(px, py, data)
 
-    px = st.peek().px
-    py = st.peek().py
+    px = q.peek().px
+    py = q.peek().py
     while px != pxf or py != pyf:
         print(f"Se han realizado {cont} iteraciones")
         pm = possible_moves(terrain, px, py)
         tmp = pm.First
-        st.push(tmp.px, tmp.py, tmp.data)
+        q.enqueue(tmp.px, tmp.py, tmp.data)
         cont += 1
-        px = st.peek().px
-        py = st.peek().py
+        px = q.last().px
+        py = q.last().py
 
-    st.show_stack()
+    q.show_queue()
+
+    return Node(terrain.pxo, terrain.pyo, terrain.pxf, terrain.pyf, terrain.name, None, None, None)
 
 
 def possible_moves(terrain, px, py):
@@ -132,18 +102,23 @@ def possible_moves(terrain, px, py):
                 poss_moves.insert(px - 1, py, l_value)
     else:
         if pxo < pxf:
+            # Verifies if the x position is lower than the matrix total columns
             if px + 1 >= terrain.matrix.columns:
                 u_value = terrain.matrix.get_value(px, py - 1)
                 poss_moves.insert(px, py - 1, u_value)
                 return poss_moves
+            # If the value is lower than it, we will move to the right
             else:
                 r_value = terrain.matrix.get_value(px + 1, py)
-            if py - 1 <= 0:
+            # Verifies if the y position is lower than 0
+            if py - 1 < 0:
                 r_value = terrain.matrix.get_value(px + 1, py)
                 poss_moves.insert(px + 1, py, r_value)
                 return poss_moves
+            # If the value is greater than it, we will move up
             else:
                 u_value = terrain.matrix.get_value(px, py - 1)
+            # Compares to find the lower value to return it
             if r_value >= u_value:
                 poss_moves.insert(px, py - 1, u_value)
             else:
@@ -314,17 +289,4 @@ def display_menu():
 
 
 if __name__ == '__main__':
-    """st = Stack()
-    st.push(0, 0, 1)
-    st.push(0, 1, 2)
-    st.push(0, 2, 3)
-    st.push(0, 3, 2)
-    st.push(0, 4, 5)
-    st.push(0, 5, 1)
-    st.push(1, 5, 4)
-    st.show_stack()
-    print(f"The length is {st.length()}")
-    print(f"The item that was popped is {st.pop().data}")
-    print(f"The length is {st.length()}")
-    st.show_stack()"""
     display_menu()

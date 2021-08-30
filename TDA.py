@@ -1,33 +1,6 @@
 from random import randint
 
 
-class SimpleNode:
-    def __init__(self, data):
-        self.data = data
-        self.Next = None
-
-
-class SimpleLinkedList:
-    def __init__(self):
-        self.First = None
-        self.length = 0
-
-    def insert(self, data):
-        new_node = SimpleNode(data)
-        if self.First is None:
-            self.First = new_node
-            self.length += 1
-        else:
-            tmp = self.First
-            while tmp.Next is not None:
-                tmp = tmp.Next
-            tmp.Next = new_node
-            self.length += 1
-
-    def len(self):
-        return self.length
-
-
 class BasicNode:
     def __init__(self, px, py, data):
         self.px = px
@@ -77,6 +50,7 @@ class Node:
         self.pyf = pyf
         self.name = name
         self.matrix = Matrix(int(m), int(n), value_list)
+        self.processed_path = None
         self.Next = None
 
 
@@ -172,40 +146,45 @@ class Matrix:
         print(line)
 
 
-class Stack:
+class Queue:
     def __init__(self):
-        self.First = None
+        self.Head = None
+        self.Tail = None
         self.len = 0
 
-    def push(self, px, py, data):
-        if self.length == 0:
-            self.First = BasicNode(px, py, data)
+    def enqueue(self, px, py, data):
+        new_node = BasicNode(px, py, data)
+        if self.Head is None:
+            self.Head = new_node
+            self.Tail = self.Head
             self.len += 1
         else:
-            tmp = self.First
-            self.First = BasicNode(px, py, data)
-            self.First.Next = tmp
-            self.len += 1
+            self.Tail.Next = new_node
+            self.Tail = new_node
 
-    def pop(self):
-        if self.len <= 0:
-            print("Stack Underflow")
+    def dequeue(self):
+        if self.Head is None:
+            print("No items in the queue")
         else:
-            tmp_res = self.First
-            tmp = self.First.Next
-            self.First = tmp
+            data = self.Head
+            self.Head = self.Head.Next
+            if self.Head is None:
+                self.Tail = None
             self.len -= 1
-            return tmp_res
+            return data
 
     def length(self):
         return self.len
 
-    def show_stack(self):
-        tmp = self.First
+    def show_queue(self):
+        tmp = self.Head
         while tmp.Next is not None:
             print(f"{tmp.data}")
             tmp = tmp.Next
         print(f"{tmp.data}")
 
     def peek(self):
-        return self.First
+        return self.Head
+
+    def last(self):
+        return self.Tail
