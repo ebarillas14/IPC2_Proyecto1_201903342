@@ -42,10 +42,16 @@ def process_terrain(terrain):
     data = terrain.matrix.get_value(px, py)
     q.enqueue(px, py, data)
 
+    values_list = BasicLinkedList()
+
+    for x in range(terrain.m):
+        for y in range(terrain.n):
+            values_list.insert(x, y, 0)
+
     px = q.peek().px
     py = q.peek().py
     while px != pxf or py != pyf:
-        print(f"Se han realizado {cont} iteraciones")
+        print(f"Calculando la mejor ruta")
         pm = possible_moves(terrain, px, py)
         tmp = pm.First
         q.enqueue(tmp.px, tmp.py, tmp.data)
@@ -53,9 +59,20 @@ def process_terrain(terrain):
         px = q.last().px
         py = q.last().py
 
-    q.show_queue()
+    print(f"Calculando la cantidad de combustible")
 
-    return Node(terrain.pxo, terrain.pyo, terrain.pxf, terrain.pyf, terrain.name, None, None, None)
+    # q.show_queue()
+    total_fuel = 0
+    temp_list = BasicLinkedList()
+    while q.length() > 0:
+        node = q.dequeue()
+        total_fuel += int(node.data)
+        values_list.update(node.px, node.py, node.data)
+        temp_list.insert(node.px, node.py, node.data)
+    result = Node(terrain.pxo, terrain.pyo, terrain.pxf, terrain.pyf, terrain.name, terrain.m, terrain.n, values_list)
+    result.update_fuel(total_fuel)
+    result.save_positions(temp_list)
+    return result
 
 
 def possible_moves(terrain, px, py):
@@ -147,7 +164,7 @@ def possible_moves(terrain, px, py):
     is that here we insert in the stack also de higher weight
     of the path trying to look for multiple paths because the 
     first version just tries to reach the one the algorithms 
-    is programmed to reach by going to the lower weight cell on each iteration"""
+    is programmed to reach by going to the lower weight cell on each iteration """
 
 
 def possible_moves_v2(terrain, px, py):
@@ -241,6 +258,7 @@ def possible_moves_v2(terrain, px, py):
 def display_menu():
     menu_flag = True
     terrains = LinkedList()
+    processed_terrains = LinkedList()
     while menu_flag:
         print("===================================================")
         print("              QUE DESEAS HACER ?                   ")
@@ -268,9 +286,21 @@ def display_menu():
                     print("==============================")
                     name = input("ingresa el nombre del terreno a procesar")
                     terrain = terrains.get(name)
-                    process_terrain(terrain)
+                    terrain_processed = process_terrain(terrain)
+                    terrain_processed.matrix.display_in_menu()
+                    print(f"La cantidad total de combustible consumido es: {terrain_processed.total_fuel}")
+                    processed_terrains.add(terrain_processed)
             elif validated_option == 3:
-                pass
+                if processed_terrains.len() == 0:
+                    print("No has cargador ningún terreo, por favor carga al menos un terreno")
+                else:
+                    print("Terrenos previamente cargados:")
+                    print("==============================")
+                    processed_terrains.get_all_names()
+                    print("==============================")
+                    name = input("ingresa el nombre del terreno a procesar")
+                    terrain = processed_terrains.get(name)
+                    write_xml(f"{terrain.name}", terrain)
             elif validated_option == 4:
                 show_developer_info()
             elif validated_option == 5:

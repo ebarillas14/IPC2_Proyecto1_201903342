@@ -41,6 +41,12 @@ class BasicLinkedList:
             print(f"en la lista de valores en la posicion x({tmp.px}) y({tmp.py}) el peso de la casilla es {tmp.data}")
             tmp = tmp.Next
 
+    def update(self, px, py, value):
+        tmp = self.First
+        while (tmp.px != px or tmp.py != py) and tmp.Next is not None:
+            tmp = tmp.Next
+        tmp.data = value
+
 
 class Node:
     def __init__(self, pxo, pyo, pxf, pyf, name, m, n, value_list):
@@ -48,10 +54,19 @@ class Node:
         self.pyo = pyo
         self.pxf = pxf
         self.pyf = pyf
+        self.m = int(m)
+        self.n = int(n)
         self.name = name
         self.matrix = Matrix(int(m), int(n), value_list)
-        self.processed_path = None
+        self.positions = None
+        self.total_fuel = None
         self.Next = None
+
+    def update_fuel(self, tf):
+        self.total_fuel = tf
+
+    def save_positions(self, positions):
+        self.positions = positions
 
 
 class LinkedList:
@@ -99,6 +114,17 @@ class LinkedList:
             tmp.Next = node
             self.length += nodes.len()
 
+    def add(self, node):
+        tmp = self.First
+        if tmp is None:
+            self.First = node
+            self.length += 1
+        else:
+            while tmp.Next is not None:
+                tmp = tmp.Next
+            tmp.Next = node
+            self.length += 1
+
 
 class Matrix:
     def __init__(self, row_count, col_count, value_list):
@@ -145,6 +171,13 @@ class Matrix:
             col_tmp = col_tmp.Next
         print(line)
 
+    def update_value(self, x, y, value):
+        row = self.matrix.get_value(0, y)
+        col = row.First
+        while col.px != x or col.py != y and col is not None:
+            col = col.Next
+        col.data = value
+
 
 class Queue:
     def __init__(self):
@@ -161,6 +194,7 @@ class Queue:
         else:
             self.Tail.Next = new_node
             self.Tail = new_node
+            self.len += 1
 
     def dequeue(self):
         if self.Head is None:
