@@ -32,60 +32,47 @@ def generate_graphic(terrain):
     pass
 
 
-def process_terrain_v2(terrain):
-    st = Stack()
-    cont = 0
-    px = pxo = int(terrain.pxo) - 1
-    py = pyo = int(terrain.pyo) - 1
-    pxf = int(terrain.pxf)-1
-    pyf = int(terrain.pyf) - 1
-    pm = possible_moves(terrain, px, py)
-    tmp = pm.First
-    while tmp.Next is not None:
-        st.push(tmp.px, tmp.py, tmp.data)
-        tmp = tmp.Next
-    st.push(tmp.px, tmp.py, tmp.data)
-
-    px = st.peek().px
-    py = st.peek().py
-    while px != pxf or py != pyf:
-        print(f"Se han realizado {cont} iteraciones")
-        pm = possible_moves(terrain, px, py)
-        tmp = pm.First
-        while tmp.Next is not None:
-            st.push(tmp.px, tmp.py, tmp.data)
-            cont += 1
-            tmp = tmp.Next
-        st.push(tmp.px, tmp.py, tmp.data)
-        cont += 1
-        px = st.peek().px
-        py = st.peek().py
-
-    st.show_stack()
-
-
 def process_terrain(terrain):
-    st = Stack()
+    q = Queue()
     cont = 0
     px = pxo = int(terrain.pxo) - 1
     py = pyo = int(terrain.pyo) - 1
     pxf = int(terrain.pxf)-1
     pyf = int(terrain.pyf) - 1
     data = terrain.matrix.get_value(px, py)
-    st.push(px, py, data)
+    q.enqueue(px, py, data)
 
-    px = st.peek().px
-    py = st.peek().py
+    values_list = BasicLinkedList()
+
+    for x in range(terrain.m):
+        for y in range(terrain.n):
+            values_list.insert(x, y, 0)
+
+    px = q.peek().px
+    py = q.peek().py
     while px != pxf or py != pyf:
-        print(f"Se han realizado {cont} iteraciones")
+        print(f"Calculando la mejor ruta")
         pm = possible_moves(terrain, px, py)
         tmp = pm.First
-        st.push(tmp.px, tmp.py, tmp.data)
+        q.enqueue(tmp.px, tmp.py, tmp.data)
         cont += 1
-        px = st.peek().px
-        py = st.peek().py
+        px = q.last().px
+        py = q.last().py
 
-    st.show_stack()
+    print(f"Calculando la cantidad de combustible")
+
+    # q.show_queue()
+    total_fuel = 0
+    temp_list = BasicLinkedList()
+    while q.length() > 0:
+        node = q.dequeue()
+        total_fuel += int(node.data)
+        values_list.update(node.px, node.py, node.data)
+        temp_list.insert(node.px, node.py, node.data)
+    result = Node(terrain.pxo, terrain.pyo, terrain.pxf, terrain.pyf, terrain.name, terrain.m, terrain.n, values_list)
+    result.update_fuel(total_fuel)
+    result.save_positions(temp_list)
+    return result
 
 
 def possible_moves(terrain, px, py):
@@ -132,18 +119,23 @@ def possible_moves(terrain, px, py):
                 poss_moves.insert(px - 1, py, l_value)
     else:
         if pxo < pxf:
+            # Verifies if the x position is lower than the matrix total columns
             if px + 1 >= terrain.matrix.columns:
                 u_value = terrain.matrix.get_value(px, py - 1)
                 poss_moves.insert(px, py - 1, u_value)
                 return poss_moves
+            # If the value is lower than it, we will move to the right
             else:
                 r_value = terrain.matrix.get_value(px + 1, py)
-            if py - 1 <= 0:
+            # Verifies if the y position is lower than 0
+            if py - 1 < 0:
                 r_value = terrain.matrix.get_value(px + 1, py)
                 poss_moves.insert(px + 1, py, r_value)
                 return poss_moves
+            # If the value is greater than it, we will move up
             else:
                 u_value = terrain.matrix.get_value(px, py - 1)
+            # Compares to find the lower value to return it
             if r_value >= u_value:
                 poss_moves.insert(px, py - 1, u_value)
             else:
@@ -172,7 +164,7 @@ def possible_moves(terrain, px, py):
     is that here we insert in the stack also de higher weight
     of the path trying to look for multiple paths because the 
     first version just tries to reach the one the algorithms 
-    is programmed to reach by going to the lower weight cell on each iteration"""
+    is programmed to reach by going to the lower weight cell on each iteration """
 
 
 def possible_moves_v2(terrain, px, py):
@@ -266,6 +258,7 @@ def possible_moves_v2(terrain, px, py):
 def display_menu():
     menu_flag = True
     terrains = LinkedList()
+    processed_terrains = LinkedList()
     while menu_flag:
         print("===================================================")
         print("              QUE DESEAS HACER ?                   ")
@@ -293,9 +286,21 @@ def display_menu():
                     print("==============================")
                     name = input("ingresa el nombre del terreno a procesar")
                     terrain = terrains.get(name)
-                    process_terrain(terrain)
+                    terrain_processed = process_terrain(terrain)
+                    terrain_processed.matrix.display_in_menu()
+                    print(f"La cantidad total de combustible consumido es: {terrain_processed.total_fuel}")
+                    processed_terrains.add(terrain_processed)
             elif validated_option == 3:
-                pass
+                if processed_terrains.len() == 0:
+                    print("No has cargador ningún terreo, por favor carga al menos un terreno")
+                else:
+                    print("Terrenos previamente cargados:")
+                    print("==============================")
+                    processed_terrains.get_all_names()
+                    print("==============================")
+                    name = input("ingresa el nombre del terreno a procesar")
+                    terrain = processed_terrains.get(name)
+                    write_xml(f"{terrain.name}", terrain)
             elif validated_option == 4:
                 show_developer_info()
             elif validated_option == 5:
@@ -314,17 +319,4 @@ def display_menu():
 
 
 if __name__ == '__main__':
-    """st = Stack()
-    st.push(0, 0, 1)
-    st.push(0, 1, 2)
-    st.push(0, 2, 3)
-    st.push(0, 3, 2)
-    st.push(0, 4, 5)
-    st.push(0, 5, 1)
-    st.push(1, 5, 4)
-    st.show_stack()
-    print(f"The length is {st.length()}")
-    print(f"The item that was popped is {st.pop().data}")
-    print(f"The length is {st.length()}")
-    st.show_stack()"""
     display_menu()

@@ -1,3 +1,5 @@
+import sys
+from xml.etree.ElementTree import Element, SubElement, ElementTree
 from TDA import *
 from random import randint
 import xml.etree.ElementTree as ET
@@ -64,3 +66,33 @@ def load_xml(route):
         terrains.insert(ipx, ipy, fpx, fpy, name, m, n, t_values)
         print(f"Hay {terrains.len()} terrenos en la lista")
     return terrains
+
+
+def write_xml(route, terrain):
+    ter = Element('terreno')
+    po = SubElement(ter, 'posicioninicio')
+    pxo = SubElement(po, 'x')
+    pxo.text = terrain.pxo
+    pyo = SubElement(po, 'y')
+    pyo.text = terrain.pyo
+
+    pf = SubElement(ter, 'posicionfin')
+    pxf = SubElement(pf, 'x')
+    pxf.text = terrain.pxf
+    pyf = SubElement(pf, 'y')
+    pyo.text = terrain.pyf
+
+    dim = SubElement(ter, 'dimension')
+    m = SubElement(dim, 'm')
+    pxf.text = terrain.m
+    n = SubElement(dim, 'n')
+    pyo.text = terrain.n
+
+    fuel = SubElement(ter, 'combustible')
+    fuel.text = terrain.total_fuel
+
+    """tmp = terrain.positions.First
+    while tmp.Next is not None:
+        pos = SubElement(ter, 'posicion')
+        pos.text = tmp.data"""
+    ElementTree(ter).write(f"{terrain.name}.xml")

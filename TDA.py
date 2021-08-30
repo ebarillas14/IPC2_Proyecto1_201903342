@@ -1,33 +1,6 @@
 from random import randint
 
 
-class SimpleNode:
-    def __init__(self, data):
-        self.data = data
-        self.Next = None
-
-
-class SimpleLinkedList:
-    def __init__(self):
-        self.First = None
-        self.length = 0
-
-    def insert(self, data):
-        new_node = SimpleNode(data)
-        if self.First is None:
-            self.First = new_node
-            self.length += 1
-        else:
-            tmp = self.First
-            while tmp.Next is not None:
-                tmp = tmp.Next
-            tmp.Next = new_node
-            self.length += 1
-
-    def len(self):
-        return self.length
-
-
 class BasicNode:
     def __init__(self, px, py, data):
         self.px = px
@@ -68,6 +41,12 @@ class BasicLinkedList:
             print(f"en la lista de valores en la posicion x({tmp.px}) y({tmp.py}) el peso de la casilla es {tmp.data}")
             tmp = tmp.Next
 
+    def update(self, px, py, value):
+        tmp = self.First
+        while (tmp.px != px or tmp.py != py) and tmp.Next is not None:
+            tmp = tmp.Next
+        tmp.data = value
+
 
 class Node:
     def __init__(self, pxo, pyo, pxf, pyf, name, m, n, value_list):
@@ -75,9 +54,19 @@ class Node:
         self.pyo = pyo
         self.pxf = pxf
         self.pyf = pyf
+        self.m = int(m)
+        self.n = int(n)
         self.name = name
         self.matrix = Matrix(int(m), int(n), value_list)
+        self.positions = None
+        self.total_fuel = None
         self.Next = None
+
+    def update_fuel(self, tf):
+        self.total_fuel = tf
+
+    def save_positions(self, positions):
+        self.positions = positions
 
 
 class LinkedList:
@@ -125,6 +114,17 @@ class LinkedList:
             tmp.Next = node
             self.length += nodes.len()
 
+    def add(self, node):
+        tmp = self.First
+        if tmp is None:
+            self.First = node
+            self.length += 1
+        else:
+            while tmp.Next is not None:
+                tmp = tmp.Next
+            tmp.Next = node
+            self.length += 1
+
 
 class Matrix:
     def __init__(self, row_count, col_count, value_list):
@@ -171,41 +171,54 @@ class Matrix:
             col_tmp = col_tmp.Next
         print(line)
 
+    def update_value(self, x, y, value):
+        row = self.matrix.get_value(0, y)
+        col = row.First
+        while col.px != x or col.py != y and col is not None:
+            col = col.Next
+        col.data = value
 
-class Stack:
+
+class Queue:
     def __init__(self):
-        self.First = None
+        self.Head = None
+        self.Tail = None
         self.len = 0
 
-    def push(self, px, py, data):
-        if self.length == 0:
-            self.First = BasicNode(px, py, data)
+    def enqueue(self, px, py, data):
+        new_node = BasicNode(px, py, data)
+        if self.Head is None:
+            self.Head = new_node
+            self.Tail = self.Head
             self.len += 1
         else:
-            tmp = self.First
-            self.First = BasicNode(px, py, data)
-            self.First.Next = tmp
+            self.Tail.Next = new_node
+            self.Tail = new_node
             self.len += 1
 
-    def pop(self):
-        if self.len <= 0:
-            print("Stack Underflow")
+    def dequeue(self):
+        if self.Head is None:
+            print("No items in the queue")
         else:
-            tmp_res = self.First
-            tmp = self.First.Next
-            self.First = tmp
+            data = self.Head
+            self.Head = self.Head.Next
+            if self.Head is None:
+                self.Tail = None
             self.len -= 1
-            return tmp_res
+            return data
 
     def length(self):
         return self.len
 
-    def show_stack(self):
-        tmp = self.First
+    def show_queue(self):
+        tmp = self.Head
         while tmp.Next is not None:
             print(f"{tmp.data}")
             tmp = tmp.Next
         print(f"{tmp.data}")
 
     def peek(self):
-        return self.First
+        return self.Head
+
+    def last(self):
+        return self.Tail
